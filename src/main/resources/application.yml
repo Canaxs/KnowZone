@@ -1,0 +1,9 @@
+server:
+  servlet:
+    context-path: "/"
+
+spring:
+  profiles:
+    active: ${PROFILE_ACTIVE}
+  jpa:
+    show-sql: false
