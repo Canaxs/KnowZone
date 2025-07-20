@@ -32,16 +32,7 @@ public class ChatServiceImpl implements ChatService {
                 message.getSenderId(), message.getReceiverId(), message.getContent());
         
         // Save message to database
-        ChatMessage messageEntity = ChatMessage.builder()
-                .messageId(message.getMessageId())
-                .senderId(message.getSenderId())
-                .receiverId(message.getReceiverId())
-                .content(message.getContent())
-                .timestamp(message.getTimestamp())
-                .messageType(MessageType.valueOf(message.getType().name()))
-                .isRead(false)
-                .build();
-        
+        ChatMessage messageEntity = buildChatMessageEntity(message);
         chatMessageRepository.save(messageEntity);
         log.info("Message saved to database with ID: {}", messageEntity.getId());
         
@@ -65,42 +56,12 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMatchNotification(Long user1Id, Long user2Id, String matchMessage) {
-        ChatMessageDTO notification1 = new ChatMessageDTO();
-        notification1.setMessageId(UUID.randomUUID().toString());
-        notification1.setContent("New match! " + matchMessage);
-        notification1.setType(MessageType.MATCH_NOTIFICATION);
-        notification1.setTimestamp(LocalDateTime.now());
-        notification1.setSenderId(user1Id);
-        notification1.setReceiverId(user2Id);
-        
-        ChatMessageDTO notification2 = new ChatMessageDTO();
-        notification2.setMessageId(UUID.randomUUID().toString());
-        notification2.setContent("New match! " + matchMessage);
-        notification2.setType(MessageType.MATCH_NOTIFICATION);
-        notification2.setTimestamp(LocalDateTime.now());
-        notification2.setSenderId(user2Id);
-        notification2.setReceiverId(user1Id);
+        ChatMessageDTO notification1 = buildChatMessageDTO(user1Id, user2Id, "New match! " + matchMessage, MessageType.MATCH_NOTIFICATION);
+        ChatMessageDTO notification2 = buildChatMessageDTO(user2Id, user1Id, "New match! " + matchMessage, MessageType.MATCH_NOTIFICATION);
         
         // Save notifications to database
-        ChatMessage notification1Entity = ChatMessage.builder()
-                .messageId(notification1.getMessageId())
-                .senderId(notification1.getSenderId())
-                .receiverId(notification1.getReceiverId())
-                .content(notification1.getContent())
-                .timestamp(notification1.getTimestamp())
-                .messageType(MessageType.MATCH_NOTIFICATION)
-                .isRead(false)
-                .build();
-        
-        ChatMessage notification2Entity = ChatMessage.builder()
-                .messageId(notification2.getMessageId())
-                .senderId(notification2.getSenderId())
-                .receiverId(notification2.getReceiverId())
-                .content(notification2.getContent())
-                .timestamp(notification2.getTimestamp())
-                .messageType(MessageType.MATCH_NOTIFICATION)
-                .isRead(false)
-                .build();
+        ChatMessage notification1Entity = buildChatMessageEntity(notification1);
+        ChatMessage notification2Entity = buildChatMessageEntity(notification2);
         
         chatMessageRepository.save(notification1Entity);
         chatMessageRepository.save(notification2Entity);
@@ -121,6 +82,29 @@ public class ChatServiceImpl implements ChatService {
         return chatHistory.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    private ChatMessageDTO buildChatMessageDTO(Long senderId, Long receiverId, String content, MessageType type) {
+        ChatMessageDTO messageDTO = new ChatMessageDTO();
+        messageDTO.setMessageId(UUID.randomUUID().toString());
+        messageDTO.setSenderId(senderId);
+        messageDTO.setReceiverId(receiverId);
+        messageDTO.setContent(content);
+        messageDTO.setTimestamp(LocalDateTime.now());
+        messageDTO.setType(type);
+        return messageDTO;
+    }
+
+    private ChatMessage buildChatMessageEntity(ChatMessageDTO messageDTO) {
+        return ChatMessage.builder()
+                .messageId(messageDTO.getMessageId())
+                .senderId(messageDTO.getSenderId())
+                .receiverId(messageDTO.getReceiverId())
+                .content(messageDTO.getContent())
+                .timestamp(messageDTO.getTimestamp())
+                .messageType(MessageType.valueOf(messageDTO.getType().name()))
+                .isRead(false)
+                .build();
     }
 
     private ChatMessageDTO convertToDto(ChatMessage entity) {
