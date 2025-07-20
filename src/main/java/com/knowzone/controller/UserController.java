@@ -5,10 +5,7 @@ import com.knowzone.dto.UserCreateResponse;
 import com.knowzone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -16,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/test")
+    private String test() {
+        return "test";
+    }
 
     @PostMapping("/create")
     private ResponseEntity<UserCreateResponse> create(@RequestBody UserCreateRequest userCreateRequest) {

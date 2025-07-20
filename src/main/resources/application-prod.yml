@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+jwt:
+  private-key-path: "/etc/keys/private_key.pem"
+  public-key-path: "/etc/keys/public_key.pem"

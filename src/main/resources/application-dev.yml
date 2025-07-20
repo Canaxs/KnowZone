@@ -7,3 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+jwt:
+  private-key-path: "keys/private_key.pem"
+  public-key-path: "keys/public_key.pem"
