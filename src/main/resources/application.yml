@@ -7,3 +7,8 @@ spring:
     active: ${PROFILE_ACTIVE}
   jpa:
     show-sql: false
+
+
+openai:
+  url: "https://api.openai.com/v1/chat/completions"
+  key: ${OPENAI_KEY}
