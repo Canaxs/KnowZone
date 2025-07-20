@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(x ->
                         x.requestMatchers("/user/test",
                                         "/api/v1/**").authenticated()
+                            .requestMatchers("/ws/**").permitAll() // WebSocket endpoints
                             .anyRequest().permitAll()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
