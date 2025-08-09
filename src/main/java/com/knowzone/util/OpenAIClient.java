@@ -1,5 +1,5 @@
 package com.knowzone.util;
-
+/*
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Component
 @RequiredArgsConstructor
@@ -57,4 +58,5 @@ public class OpenAIClient {
             throw new RuntimeException("Failed to get response from OpenAI API: " + e.getMessage(), e);
         }
     }
-} 
+}
+ */

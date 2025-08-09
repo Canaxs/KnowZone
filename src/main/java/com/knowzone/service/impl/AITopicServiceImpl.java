@@ -1,5 +1,5 @@
 package com.knowzone.service.impl;
-
+/*
 import com.knowzone.dto.AITopicResponse;
 import com.knowzone.persistence.entity.User;
 import com.knowzone.service.AITopicService;
@@ -97,3 +97,4 @@ public class AITopicServiceImpl implements AITopicService {
                 Arrays.asList("experiences", "thoughts", "preferences", "stories", "interests"));
     }
 }
+ */

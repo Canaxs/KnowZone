@@ -1,7 +1,8 @@
 package com.knowzone.service;
 
+import com.knowzone.dto.LoginResponse;
 import com.knowzone.dto.UserDTO;
 
 public interface AuthService {
-    String login(UserDTO userDTO);
+    LoginResponse login(UserDTO userDTO);
 }

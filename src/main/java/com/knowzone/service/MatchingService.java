@@ -11,6 +11,14 @@ public interface MatchingService {
     void evaluateAndCreateMatch(User user1, User user2);
 
     List<Match> getUserMatches(Long userId);
+    
+    List<Match> getUserAcceptedMatches(Long userId);
+
+    Match getMatchById(Long matchId);
 
     String respondToMatch(Long matchId, MatchResponseRequest request);
+
+    List<String> getCommonHobbies(User user1, User user2);
+
+    String getTopicForCommonHobbies(User user1, User user2);
 }

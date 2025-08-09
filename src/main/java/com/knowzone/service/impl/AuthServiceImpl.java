@@ -1,5 +1,6 @@
 package com.knowzone.service.impl;
 
+import com.knowzone.dto.LoginResponse;
 import com.knowzone.dto.UserDTO;
 import com.knowzone.exception.InvalidPasswordException;
 import com.knowzone.exception.UserNotFoundException;
@@ -24,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public String login(UserDTO userDTO) {
+    public LoginResponse login(UserDTO userDTO) {
         log.info("Login attempt for username: {}", userDTO.getUsername());
         
         Optional<User> userOpt = userRepository.findByUsername(userDTO.getUsername());
@@ -33,7 +34,14 @@ public class AuthServiceImpl implements AuthService {
             if(passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
                 String token = jwtUtil.generateToken(user.getUsername(), String.valueOf(user.getId()));
                 log.info("Login successful for user: {}", user.getUsername());
-                return token;
+                return LoginResponse.builder()
+                        .token(token)
+                        .onboardingCompleted(!userOpt.get().getInterests().isEmpty())
+                        .username(userOpt.get().getUsername())
+                        .email(userOpt.get().getEmail())
+                        .userId(userOpt.get().getId())
+                        .gender(userOpt.get().getGender())
+                        .build();
             }
             else {
                 log.warn("Invalid password for username: {}", userDTO.getUsername());

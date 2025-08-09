@@ -12,10 +12,11 @@ import java.util.List;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
     @Query("SELECT cm FROM ChatMessage cm WHERE " +
-           "(cm.senderId = :user1Id AND cm.receiverId = :user2Id) OR " +
-           "(cm.senderId = :user2Id AND cm.receiverId = :user1Id) " +
-           "ORDER BY cm.timestamp ASC")
-    List<ChatMessage> findChatHistoryBetweenUsers(@Param("user1Id") Long user1Id, 
+            "((cm.senderId = :user1Id AND cm.receiverId = :user2Id) OR " +
+            "(cm.senderId = :user2Id AND cm.receiverId = :user1Id)) " +
+            "AND cm.messageType = 'CHAT' " +
+            "ORDER BY cm.timestamp ASC")
+    List<ChatMessage> findChatHistoryBetweenUsers(@Param("user1Id") Long user1Id,
                                                  @Param("user2Id") Long user2Id);
 
     @Query("SELECT cm FROM ChatMessage cm WHERE " +

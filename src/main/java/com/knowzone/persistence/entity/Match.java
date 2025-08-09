@@ -1,6 +1,7 @@
 package com.knowzone.persistence.entity;
 
 import com.knowzone.enums.MatchStatus;
+import com.knowzone.enums.MatchUserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,12 @@ public class Match {
     @ElementCollection
     @CollectionTable(name = "match_keywords")
     private List<String> keywords = new ArrayList<>();
+
+    @Column(name = "user1_response")
+    private MatchUserStatus user1Response = MatchUserStatus.PENDING;
+
+    @Column(name = "user2_response")
+    private MatchUserStatus user2Response = MatchUserStatus.PENDING;
 
     @Enumerated(EnumType.STRING)
     private MatchStatus status = MatchStatus.PENDING;

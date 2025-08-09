@@ -1,7 +1,9 @@
 package com.knowzone.service;
 
+import com.knowzone.dto.OnboardingUpdateRequest;
 import com.knowzone.dto.UserCreateRequest;
 import com.knowzone.dto.UserCreateResponse;
+import com.knowzone.dto.UserResponse;
 import com.knowzone.persistence.entity.User;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Optional;
 public interface UserService {
     UserCreateResponse create(UserCreateRequest userCreateRequest);
     
-    Optional<User> findById(Long id);
+    UserResponse findById(Long id);
     
     Optional<User> findByUsername(String username);
     
@@ -23,4 +25,6 @@ public interface UserService {
     boolean existsByUsername(String username);
     
     boolean existsByEmail(String email);
+
+    void updateOnboardingInfo(OnboardingUpdateRequest request);
 }

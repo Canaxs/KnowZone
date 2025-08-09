@@ -26,7 +26,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ChatMessageDTO processMessage(ChatMessageDTO message) {
         message.setMessageId(UUID.randomUUID().toString());
-        message.setTimestamp(LocalDateTime.now());
+        message.setTimestamp(String.valueOf(LocalDateTime.now()));
         
         log.info("Processing message from user {} to user {}: {}", 
                 message.getSenderId(), message.getReceiverId(), message.getContent());
@@ -34,12 +34,7 @@ public class ChatServiceImpl implements ChatService {
         // Save message to database
         ChatMessage messageEntity = buildChatMessageEntity(message);
         chatMessageRepository.save(messageEntity);
-        log.info("Message saved to database with ID: {}", messageEntity.getId());
-        
-        // Send to specific user if it's a private message
-        if (message.getReceiverId() != null) {
-            sendPrivateMessage(message.getReceiverId(), message);
-        }
+        log.info("Message saved to database with ID: {} and content: {}", messageEntity.getId(), messageEntity.getContent());
         
         return message;
     }
@@ -90,7 +85,7 @@ public class ChatServiceImpl implements ChatService {
         messageDTO.setSenderId(senderId);
         messageDTO.setReceiverId(receiverId);
         messageDTO.setContent(content);
-        messageDTO.setTimestamp(LocalDateTime.now());
+        messageDTO.setTimestamp(String.valueOf(LocalDateTime.now()));
         messageDTO.setType(type);
         return messageDTO;
     }
@@ -101,7 +96,7 @@ public class ChatServiceImpl implements ChatService {
                 .senderId(messageDTO.getSenderId())
                 .receiverId(messageDTO.getReceiverId())
                 .content(messageDTO.getContent())
-                .timestamp(messageDTO.getTimestamp())
+                .timestamp(LocalDateTime.parse(messageDTO.getTimestamp()))
                 .messageType(MessageType.valueOf(messageDTO.getType().name()))
                 .isRead(false)
                 .build();
@@ -113,7 +108,7 @@ public class ChatServiceImpl implements ChatService {
                 entity.getSenderId(),
                 entity.getReceiverId(),
                 entity.getContent(),
-                entity.getTimestamp(),
+                entity.getTimestamp().toString(),
                 MessageType.valueOf(entity.getMessageType().name())
         );
     }

@@ -1,5 +1,5 @@
 package com.knowzone.service;
-
+/*
 import com.knowzone.dto.AITopicResponse;
 import com.knowzone.persistence.entity.User;
 
@@ -12,3 +12,4 @@ public interface AITopicService {
     List<String> getKeywordsFromAI(String topic, int keywordCount);
     AITopicResponse generateTopicAndKeywords(User user1, User user2);
 }
+ */

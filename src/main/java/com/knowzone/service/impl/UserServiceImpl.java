@@ -1,13 +1,19 @@
 package com.knowzone.service.impl;
 
+import com.knowzone.config.security.CustomUserDetails;
+import com.knowzone.dto.OnboardingUpdateRequest;
 import com.knowzone.dto.UserCreateRequest;
 import com.knowzone.dto.UserCreateResponse;
+import com.knowzone.dto.UserResponse;
+import com.knowzone.exception.UserNotFoundException;
 import com.knowzone.exception.UsernameAlreadyExistsException;
 import com.knowzone.persistence.entity.User;
 import com.knowzone.persistence.repository.UserRepository;
 import com.knowzone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public UserResponse findById(Long id) {
         log.debug("Finding user by ID: {}", id);
-        return userRepository.findById(id);
+        User user = userRepository.findById(id).get();
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .isActive(user.getIsActive())
+                .build();
     }
 
     @Override
@@ -111,5 +121,18 @@ public class UserServiceImpl implements UserService {
     public boolean existsByEmail(String email) {
         log.debug("Checking if user exists by email: {}", email);
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void updateOnboardingInfo(OnboardingUpdateRequest request) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = Long.valueOf(userDetails.getUserId());
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+        user.setInterests(request.getInterests());
+        user.setHobbies(request.getHobbies());
+        user.setIdealPersonTraits(request.getIdealPersonTraits());
+        user.setGender(request.getGender());
+        userRepository.save(user);
     }
 }

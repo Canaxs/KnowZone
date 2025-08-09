@@ -1,5 +1,6 @@
 package com.knowzone.controller;
 
+import com.knowzone.dto.LoginResponse;
 import com.knowzone.dto.UserDTO;
 import com.knowzone.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
+    private ResponseEntity<LoginResponse> login(@RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(authService.login(userDTO));
     }
 }

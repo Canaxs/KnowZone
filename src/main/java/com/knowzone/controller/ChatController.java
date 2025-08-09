@@ -9,34 +9,51 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
 
     private final ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     // WebSocket endpoints
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessageDTO sendMessage(@Payload ChatMessageDTO chatMessage) {
+    @MessageMapping("/chat/sendMessage")
+    public void sendMessage(@Payload ChatMessageDTO chatMessage) {
         log.info("Received message: {}", chatMessage.getContent());
-        return chatService.processMessage(chatMessage);
+        ChatMessageDTO processedMessage = chatService.processMessage(chatMessage);
+
+        Long senderId = processedMessage.getSenderId();
+        Long receiverId = processedMessage.getReceiverId();
+
+        Long smallerId = Math.min(senderId, receiverId);
+        Long largerId = Math.max(senderId, receiverId);
+
+        String destination = String.format("/topic/chat-%d-%d", smallerId, largerId);
+
+        messagingTemplate.convertAndSend(destination, processedMessage);
     }
 
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public ChatMessageDTO addUser(@Payload ChatMessageDTO chatMessage,
+    @MessageMapping("/chat/addUser")
+    public void addUser(@Payload ChatMessageDTO chatMessage,
                                   SimpMessageHeaderAccessor headerAccessor) {
         // Add user ID in web socket session
         headerAccessor.getSessionAttributes().put("userId", chatMessage.getSenderId());
         log.info("User added to chat: {}", chatMessage.getSenderId());
-        return chatMessage;
+
+        messagingTemplate.convertAndSendToUser(
+                chatMessage.getSenderId().toString(),
+                "/queue/private",
+                chatMessage
+        );
     }
 
     // REST API endpoints

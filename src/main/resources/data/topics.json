@@ -1,0 +1,55 @@
+[
+  { "category1": "Spor", "category2": "Teknoloji", "topic": "Futbol ve basketbolda kullanılan yeni teknolojiler" },
+  { "category1": "Spor", "category2": "Bilim", "topic": "Sporcuların performansını artıran bilimsel yöntemler" },
+  { "category1": "Spor", "category2": "Tarih", "topic": "Geçmişteki unutulmaz spor karşılaşmaları" },
+  { "category1": "Spor", "category2": "Dizi", "topic": "Spor temalı diziler ve belgeseller" },
+  { "category1": "Spor", "category2": "Müzik", "topic": "Maçlarda çalan marşlar ve şarkılar" },
+  { "category1": "Spor", "category2": "Film", "topic": "Spor filmlerindeki ilham verici hikayeler" },
+  { "category1": "Spor", "category2": "Uzay", "topic": "Astronotların uzayda spor yapma yöntemleri" },
+  { "category1": "Spor", "category2": "Felsefe", "topic": "Sporun insan ruhuna etkisi" },
+
+  { "category1": "Teknoloji", "category2": "Bilim", "topic": "Yapay zeka ve bilimsel keşifler" },
+  { "category1": "Teknoloji", "category2": "Tarih", "topic": "Teknolojik gelişmelerin tarihsel dönüm noktaları" },
+  { "category1": "Teknoloji", "category2": "Dizi", "topic": "Teknoloji temalı diziler" },
+  { "category1": "Teknoloji", "category2": "Müzik", "topic": "Dijital müzik teknolojileri" },
+  { "category1": "Teknoloji", "category2": "Film", "topic": "Bilim kurgu filmlerindeki teknolojiler" },
+  { "category1": "Teknoloji", "category2": "Uzay", "topic": "Uzay araştırmalarında kullanılan teknolojiler" },
+  { "category1": "Teknoloji", "category2": "Felsefe", "topic": "Teknolojinin etik boyutları" },
+
+  { "category1": "Bilim", "category2": "Tarih", "topic": "Tarihi bilimsel buluşlar" },
+  { "category1": "Bilim", "category2": "Dizi", "topic": "Bilim temalı diziler" },
+  { "category1": "Bilim", "category2": "Müzik", "topic": "Müziğin insan beynine bilimsel etkileri" },
+  { "category1": "Bilim", "category2": "Film", "topic": "Bilim konulu filmler" },
+  { "category1": "Bilim", "category2": "Uzay", "topic": "Evrenin oluşumu ve uzay araştırmaları" },
+  { "category1": "Bilim", "category2": "Felsefe", "topic": "Bilim ve felsefenin ilişkisi" },
+
+  { "category1": "Tarih", "category2": "Dizi", "topic": "Tarihi olayları konu alan diziler" },
+  { "category1": "Tarih", "category2": "Müzik", "topic": "Tarihi dönemlerde müzik kültürü" },
+  { "category1": "Tarih", "category2": "Film", "topic": "Tarihi filmler ve belgeseller" },
+  { "category1": "Tarih", "category2": "Uzay", "topic": "Uzay keşiflerinin tarihçesi" },
+  { "category1": "Tarih", "category2": "Felsefe", "topic": "Tarihin felsefi yorumları" },
+
+  { "category1": "Dizi", "category2": "Müzik", "topic": "Dizilerde kullanılan unutulmaz müzikler" },
+  { "category1": "Dizi", "category2": "Film", "topic": "Dizi ve film uyarlamaları" },
+  { "category1": "Dizi", "category2": "Uzay", "topic": "Uzay temalı diziler" },
+  { "category1": "Dizi", "category2": "Felsefe", "topic": "Dizilerdeki felsefi mesajlar" },
+
+  { "category1": "Müzik", "category2": "Film", "topic": "Filmlerdeki unutulmaz film müzikleri" },
+  { "category1": "Müzik", "category2": "Uzay", "topic": "Uzay temalı müzik eserleri" },
+  { "category1": "Müzik", "category2": "Felsefe", "topic": "Müziğin felsefi anlamı" },
+
+  { "category1": "Film", "category2": "Uzay", "topic": "Uzay temalı filmler" },
+  { "category1": "Film", "category2": "Felsefe", "topic": "Filmlerdeki felsefi öğeler" },
+
+  { "category1": "Uzay", "category2": "Felsefe", "topic": "Evrenin varoluşu üzerine felsefi düşünceler" },
+
+  { "category1": "Spor", "category2": "Spor", "topic": "Sporun günlük hayatımızdaki yeri ve önemi" },
+  { "category1": "Teknoloji", "category2": "Teknoloji", "topic": "Teknolojinin hayatımızdaki basit kullanımları" },
+  { "category1": "Bilim", "category2": "Bilim", "topic": "Bilimin günlük hayata etkileri" },
+  { "category1": "Tarih", "category2": "Tarih", "topic": "Tarihten ilginç ve eğlenceli bilgiler" },
+  { "category1": "Dizi", "category2": "Dizi", "topic": "Favori diziler ve neden sevdiğimiz" },
+  { "category1": "Müzik", "category2": "Müzik", "topic": "Müziğin ruh halimize etkisi" },
+  { "category1": "Film", "category2": "Film", "topic": "En sevilen filmler ve türleri" },
+  { "category1": "Uzay", "category2": "Uzay", "topic": "Uzayın gizemli ve merak uyandıran yönleri" },
+  { "category1": "Felsefe", "category2": "Felsefe", "topic": "Felsefenin hayatımızdaki yeri ve önemi" }
+]

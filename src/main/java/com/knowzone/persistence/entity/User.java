@@ -1,5 +1,6 @@
 package com.knowzone.persistence.entity;
 
+import com.knowzone.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +43,14 @@ public class User {
     @CollectionTable(name = "user_interests")
     private Set<String> interests = new HashSet<>();
 
+    @ElementCollection
+    @CollectionTable(name = "user_hobbies")
+    private Set<String> hobbies = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "user_ideal_person_traits")
+    private Set<String> idealPersonTraits = new HashSet<>();
+
     @Column(name = "age_range")
     private String ageRange;
 
@@ -50,5 +59,12 @@ public class User {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private Gender gender;
 
 }

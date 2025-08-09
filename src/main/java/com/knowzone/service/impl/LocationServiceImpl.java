@@ -1,5 +1,7 @@
 package com.knowzone.service.impl;
 
+import com.knowzone.config.security.CustomUserDetails;
+import com.knowzone.enums.Gender;
 import com.knowzone.persistence.entity.User;
 import com.knowzone.persistence.repository.MatchRepository;
 import com.knowzone.persistence.repository.UserRepository;
@@ -7,6 +9,7 @@ import com.knowzone.service.LocationService;
 import com.knowzone.service.MatchingService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,7 +21,6 @@ import java.util.List;
 public class LocationServiceImpl implements LocationService {
 
     private final UserRepository userRepository;
-    private final MatchRepository matchRepository;
     private final MatchingService matchingService;
 
     @Override
@@ -38,8 +40,9 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void updateUserLocation(Long userId, double latitude, double longitude) {
-        User user = userRepository.findById(userId)
+    public void updateUserLocation(double latitude, double longitude) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(Long.valueOf(userDetails.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setLatitude(latitude);
@@ -53,26 +56,23 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<User> findNearbyUsers(User user, double radiusKm) {
-        List<User> allActiveUsers = userRepository.findByIsActiveTrue();
-        List<User> nearbyUsers = new ArrayList<>();
+        double lat = user.getLatitude();
+        double lon = user.getLongitude();
+        /*
+        double latDelta = radiusKm / 111.0;
 
-        for (User otherUser : allActiveUsers) {
-            if (!otherUser.getId().equals(user.getId())
-                    && otherUser.getLatitude() != null
-                    && otherUser.getLongitude() != null) {
+        double lonDelta = radiusKm / (111.0 * Math.cos(Math.toRadians(lat)));
 
-                double distance = calculateDistance(
-                        user.getLatitude(), user.getLongitude(),
-                        otherUser.getLatitude(), otherUser.getLongitude()
-                );
+        double minLat = lat - latDelta;
+        double maxLat = lat + latDelta;
+        double minLon = lon - lonDelta;
+        double maxLon = lon + lonDelta;
 
-                if (distance <= radiusKm) {
-                    nearbyUsers.add(otherUser);
-                }
-            }
-        }
-
-        return nearbyUsers;
+        return userRepository.findNearbyUsersInBoundingBox(
+                minLat, maxLat, minLon, maxLon, user.getId()
+        );
+         */
+        return userRepository.findNearbyUsersByGenderHaversine(lat, lon, radiusKm, user.getId(),determineTargetGender(user.getGender()));
     }
 
     private void findNearbyUsersAndMatch(User user) {
@@ -81,5 +81,16 @@ public class LocationServiceImpl implements LocationService {
         for (User nearbyUser : nearbyUsers) {
             matchingService.evaluateAndCreateMatch(user, nearbyUser);
         }
+    }
+
+    private Gender determineTargetGender(Gender userGender) {
+        if (userGender == null) {
+            return null;
+        }
+
+        return switch (userGender) {
+            case MALE -> Gender.FEMALE;
+            case FEMALE -> Gender.MALE;
+        };
     }
 }
