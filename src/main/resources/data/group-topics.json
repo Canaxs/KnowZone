@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Atatürk'ün ilham veren yönü",
+    "description": "Atatürk’ün hangi özelliği bugüne en çok ışık tutuyor?"
+  },
+  {
+    "id": 2,
+    "name": "Cumhuriyetin geleceği",
+    "description": "Cumhuriyet değerleri sizce gençler için ne ifade ediyor?"
+  },
+  {
+    "id": 3,
+    "name": "Yaz tatil planları",
+    "description": "Yazın deniz mi, yayla mı daha cazip geliyor?"
+  },
+  {
+    "id": 4,
+    "name": "Yaz mevsiminin zorlukları",
+    "description": "Sıcaklarla baş etmenin en iyi yolu nedir?"
+  },
+  {
+    "id": 5,
+    "name": "Süper Lig şampiyonluk yarışı",
+    "description": "Bu sezon hangi takımın şansı daha yüksek?"
+  },
+  {
+    "id": 6,
+    "name": "Futbol ve teknoloji",
+    "description": "VAR sistemi sizce adaleti sağlıyor mu?"
+  },
+  {
+    "id": 7,
+    "name": "Gençlerin siyasetteki rolü",
+    "description": "Gençler siyaseti değiştirebilir mi?"
+  },
+  {
+    "id": 8,
+    "name": "Seçim tartışmaları",
+    "description": "Seçimler toplumda birlik mi ayrışma mı getiriyor?"
+  },
+  {
+    "id": 9,
+    "name": "Yapay zekâ etkileri",
+    "description": "Gelecekte hangi meslekleri yok edecek?"
+  },
+  {
+    "id": 10,
+    "name": "Bilimde son gelişmeler",
+    "description": "Uzay araştırmaları sizce neden önemli?"
+  },
+  {
+    "id": 11,
+    "name": "Kuantum merakı",
+    "description": "Kuantum fiziği gündelik hayatımıza nasıl yansır?"
+  },
+  {
+    "id": 12,
+    "name": "Çift yarık deneyi",
+    "description": "Bu deney bize evren hakkında ne öğretiyor?"
+  },
+  {
+    "id": 13,
+    "name": "Twitter gündemi",
+    "description": "Twitter’daki tartışmalar toplumun aynası mı?"
+  },
+  {
+    "id": 14,
+    "name": "Sosyal medya bağımlılığı",
+    "description": "Günde kaç saat sosyal medyada vakit harcıyorsunuz?"
+  },
+  {
+    "id": 15,
+    "name": "Türk komedi anlayışı",
+    "description": "Türk mizahı mı yabancı mizah mı daha iyi?"
+  },
+  {
+    "id": 16,
+    "name": "En komik komedyen",
+    "description": "Hangi komedyen sahnede sizi kahkahaya boğar?"
+  },
+  {
+    "id": 17,
+    "name": "Tarihten dersler",
+    "description": "Osmanlı’dan bugüne en büyük ders nedir?"
+  },
+  {
+    "id": 18,
+    "name": "Ekonomi ve günlük yaşam",
+    "description": "Enflasyon hayatınızı nasıl etkiliyor?"
+  },
+  {
+    "id": 19,
+    "name": "Türkiye’de eğitim",
+    "description": "Mevcut eğitim sistemi sizce yeterli mi?"
+  },
+  {
+    "id": 20,
+    "name": "Geleceğin teknolojileri",
+    "description": "Metaverse ya da yapay zekâ, hangisi daha kalıcı olur?"
+  }
+]

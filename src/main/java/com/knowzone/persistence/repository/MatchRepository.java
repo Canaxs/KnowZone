@@ -1,6 +1,7 @@
 package com.knowzone.persistence.repository;
 
 import com.knowzone.enums.MatchStatus;
+import com.knowzone.enums.MatchUserStatus;
 import com.knowzone.persistence.entity.Match;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,14 @@ public interface MatchRepository extends JpaRepository<Match , Long> {
 
     @Query("SELECT m FROM Match m WHERE (m.user1Id = :userId OR m.user2Id = :userId) AND m.status = :status")
     List<Match> findPendingMatchesForUser(@Param("userId") Long userId, MatchStatus status);
+
+    @Query("SELECT m FROM Match m WHERE " +
+            "m.status = :status AND " +
+            "((m.user1Id = :userId AND m.user1Response = :userResponse ) OR " +
+            "(m.user2Id = :userId AND m.user2Response = :userResponse ))")
+    List<Match> findPendingMatchesForUserByResponse(@Param("userId") Long userId,
+                                                    @Param("status") MatchStatus status,
+                                                    @Param("userResponse") MatchUserStatus userResponse);
+
     List<Match> findByStatusAndExpiresAtBefore(MatchStatus status, LocalDateTime dateTime);
 }

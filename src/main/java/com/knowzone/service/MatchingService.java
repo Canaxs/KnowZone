@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface MatchingService {
     double calculateCompatibilityScore(User user1, User user2);
-    void evaluateAndCreateMatch(User user1, User user2);
+    boolean evaluateAndCreateMatch(User user1, User user2);
 
     List<Match> getUserMatches(Long userId);
+
+    List<Match> getAllUserMatches(Long userId);
     
     List<Match> getUserAcceptedMatches(Long userId);
 

@@ -9,6 +9,7 @@ import com.knowzone.service.LocationService;
 import com.knowzone.service.MatchingService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
@@ -40,7 +42,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void updateUserLocation(double latitude, double longitude) {
+    public boolean updateUserLocation(double latitude, double longitude) {
         CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(Long.valueOf(userDetails.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -51,7 +53,7 @@ public class LocationServiceImpl implements LocationService {
 
         userRepository.save(user);
 
-        findNearbyUsersAndMatch(user);
+        return findNearbyUsersAndMatch(user);
     }
 
     @Override
@@ -75,12 +77,19 @@ public class LocationServiceImpl implements LocationService {
         return userRepository.findNearbyUsersByGenderHaversine(lat, lon, radiusKm, user.getId(),determineTargetGender(user.getGender()));
     }
 
-    private void findNearbyUsersAndMatch(User user) {
+    private boolean findNearbyUsersAndMatch(User user) {
         List<User> nearbyUsers = findNearbyUsers(user, 1.0);
 
         for (User nearbyUser : nearbyUsers) {
-            matchingService.evaluateAndCreateMatch(user, nearbyUser);
+            boolean matchCreated = matchingService.evaluateAndCreateMatch(user, nearbyUser);
+
+            if (matchCreated) {
+                log.info("Match created for user {} with nearby user {}, stopping search",
+                        user.getId(), nearbyUser.getId());
+                return true;
+            }
         }
+        return false;
     }
 
     private Gender determineTargetGender(Gender userGender) {

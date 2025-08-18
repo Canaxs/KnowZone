@@ -58,10 +58,10 @@ public class MatchingServiceImpl implements MatchingService {
     }
 
     @Override
-    public void evaluateAndCreateMatch(User user1, User user2) {
+    public boolean evaluateAndCreateMatch(User user1, User user2) {
         if (matchRepository.existsByUser1IdAndUser2IdOrUser2IdAndUser1Id(
                 user1.getId(), user2.getId(), user1.getId(), user2.getId())) {
-            return;
+            return false;
         }
 
         double compatibilityScore = calculateCompatibilityScore(user1, user2);
@@ -83,11 +83,20 @@ public class MatchingServiceImpl implements MatchingService {
             
             log.info("New match created between users {} and {} with score: {}", 
                     user1.getId(), user2.getId(), compatibilityScore);
+
+            return true;
         }
+
+        return false;
     }
 
     @Override
     public List<Match> getUserMatches(Long userId) {
+        return matchRepository.findPendingMatchesForUserByResponse(userId,MatchStatus.PENDING,MatchUserStatus.PENDING);
+    }
+
+    @Override
+    public List<Match> getAllUserMatches(Long userId) {
         return matchRepository.findPendingMatchesForUser(userId, MatchStatus.PENDING);
     }
 
@@ -174,7 +183,7 @@ public class MatchingServiceImpl implements MatchingService {
         List<String> commonHobbies = getCommonHobbies(user1, user2);
 
         if (commonHobbies.isEmpty()) {
-            return "Ortak hobi bulunamadı.";
+            return topicService.getRandomTopic();
         }
 
         String cat1, cat2;

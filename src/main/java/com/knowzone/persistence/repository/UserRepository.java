@@ -42,4 +42,20 @@ public interface UserRepository extends JpaRepository<User , Long> {
                                                 @Param("radiusKm") double radiusKm,
                                                 @Param("userId") Long userId,
                                                 @Param("targetGender") Gender gender);
+
+    @Query("""
+            SELECT COUNT(u) FROM User u
+            WHERE u.isActive = true
+            AND u.latitude IS NOT NULL AND u.longitude IS NOT NULL
+            AND (
+                6371 * acos(
+                    cos(radians(:regionLat)) * cos(radians(u.latitude)) *
+                    cos(radians(u.longitude) - radians(:regionLon)) +
+                    sin(radians(:regionLat)) * sin(radians(u.latitude))
+                )
+            ) <= :radiusKm
+           """)
+    Long countUsersInRegionRadius(@Param("regionLat") double regionLat,
+                                  @Param("regionLon") double regionLon,
+                                  @Param("radiusKm") double radiusKm);
 }

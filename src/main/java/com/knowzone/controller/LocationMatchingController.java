@@ -21,8 +21,7 @@ public class LocationMatchingController {
     @PostMapping("/location/update")
     public ResponseEntity<?> updateLocation(@RequestBody LocationUpdateRequest request) {
         try {
-            locationService.updateUserLocation(request.getLatitude(), request.getLongitude());
-            return ResponseEntity.ok("Location updated successfully");
+            return ResponseEntity.ok(locationService.updateUserLocation(request.getLatitude(), request.getLongitude()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error updating location: " + e.getMessage());
         }
@@ -31,6 +30,11 @@ public class LocationMatchingController {
     @GetMapping("/matches/{userId}")
     public ResponseEntity<List<Match>> getUserMatches(@PathVariable Long userId) {
         return ResponseEntity.ok(matchingService.getUserMatches(userId));
+    }
+
+    @GetMapping("/matches/all/{userId}")
+    public ResponseEntity<List<Match>> getAllUserMatches(@PathVariable Long userId) {
+        return ResponseEntity.ok(matchingService.getAllUserMatches(userId));
     }
 
     @GetMapping("/matches/{userId}/accepted")
