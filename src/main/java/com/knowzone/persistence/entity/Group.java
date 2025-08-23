@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "groups")
+@Table(name = "group_table")
 @Getter
 @Setter
 @Builder
@@ -39,10 +39,10 @@ public class Group {
     private Integer currentMembers = 0;
 
     @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
+    private LocalDateTime endTime;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

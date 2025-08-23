@@ -51,6 +51,7 @@ public class GroupChatServiceImpl implements GroupChatService {
     @Transactional
     public GroupChatResponse sendGroupMessage(GroupChatRequest groupChatRequest) {
         // Check if user is member of the group
+        log.info("GroupId: "+groupChatRequest.getGroupId().toString()+ " UserId: "+groupChatRequest.getUserId());
         if (!isUserMemberOfGroup(groupChatRequest.getUserId(), groupChatRequest.getGroupId())) {
             throw new RuntimeException("User is not a member of this group");
         }

@@ -14,7 +14,9 @@ public interface GroupService {
     
     List<GroupResponse> getGroupsByRegion(Long regionId);
     
-    List<GroupResponse> getNearbyGroups(Double latitude, Double longitude, Double radiusKm);
+    List<GroupResponse> getNearbyGroups(Double latitude, Double longitude);
+
+    List<GroupResponse> getNearbyInactiveGroups(Double latitude, Double longitude);
     
     List<GroupResponse> getActiveGroupsNow();
     

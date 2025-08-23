@@ -2,6 +2,7 @@ package com.knowzone.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -13,6 +14,6 @@ public class GroupRequest {
     private String description;
     private Long regionId;
     private Integer maxMembers;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }

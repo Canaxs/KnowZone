@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/regions")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Slf4j
 public class RegionController {

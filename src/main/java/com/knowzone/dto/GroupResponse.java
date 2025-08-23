@@ -17,8 +17,8 @@ public class GroupResponse {
     private RegionResponse region;
     private Integer maxMembers;
     private Integer currentMembers;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Boolean isActive;
     private GroupCreationType groupCreationType;
     private LocalDateTime createdAt;

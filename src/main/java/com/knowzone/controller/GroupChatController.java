@@ -70,14 +70,14 @@ public class GroupChatController {
         }
     }
 
-    @GetMapping("/api/group-chat/history/{groupId}")
+    @GetMapping("/history/{groupId}")
     public ResponseEntity<List<GroupChatResponse>> getGroupChatHistory(@PathVariable Long groupId) {
         log.info("Getting chat history for group: {}", groupId);
         List<GroupChatResponse> chats = groupChatService.getGroupChatHistory(groupId);
         return ResponseEntity.ok(chats);
     }
 
-    @GetMapping("/api/group-chat/recent/{groupId}")
+    @GetMapping("/recent/{groupId}")
     public ResponseEntity<List<GroupChatResponse>> getRecentGroupChats(
             @PathVariable Long groupId,
             @RequestParam(defaultValue = "50") int limit) {
@@ -86,14 +86,14 @@ public class GroupChatController {
         return ResponseEntity.ok(chats);
     }
 
-    @GetMapping("/api/group-chat/members/{groupId}")
+    @GetMapping("/members/{groupId}")
     public ResponseEntity<List<Long>> getGroupMembers(@PathVariable Long groupId) {
         log.info("Getting members for group: {}", groupId);
         List<Long> memberIds = groupChatService.getGroupMemberIds(groupId);
         return ResponseEntity.ok(memberIds);
     }
 
-    @DeleteMapping("/api/group-chat/{chatId}")
+    @DeleteMapping("/{chatId}")
     public ResponseEntity<Void> deleteGroupMessage(@PathVariable Long chatId) {
         log.info("Deleting group chat message: {}", chatId);
         groupChatService.deleteGroupMessage(chatId);

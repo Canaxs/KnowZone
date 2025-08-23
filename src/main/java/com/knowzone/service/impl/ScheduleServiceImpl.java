@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,6 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Scheduled(cron = "0 0 0 * * ?") // Her gün gece yarısı (00:00)
+    //@Scheduled(cron = "0 */2 * * * ?")
     public void performDailyTasks() {
         try {
             log.info("Starting random group creation from unused regions...");
@@ -66,7 +68,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             for (int i = 0; i < randomCount && i < shuffledRegions.size(); i++) {
                 Region region = shuffledRegions.get(i);
-                LocalTime startTime = LocalTime.of(random.nextInt(12, 23), 0);
+                LocalTime randomTime = LocalTime.of(random.nextInt(12, 23), 0);
+                LocalDateTime startTime = LocalDateTime.now().with(randomTime);
                 createRandomGroup(region, GroupCreationType.DAILY_SCHEDULE,startTime);
             }
 
@@ -117,7 +120,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         region.getName(), i, userCount, radiusKm);
 
                 if (userCount >= 10) {
-                    LocalTime startTime = LocalTime.now().plusMinutes(10);
+                    LocalDateTime startTime = LocalDateTime.now().plusMinutes(10);
                     createRandomGroup(region,GroupCreationType.DEMAND_BASED,startTime);
                 }
             }
@@ -128,13 +131,28 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     }
 
-    private void createRandomGroup(Region region, GroupCreationType groupCreationType, LocalTime startTime) {
+    @Scheduled(fixedRate = 300000) // 5 dakika = 300,000 ms
+    @Transactional
+    @Override
+    public void expireGroups() {
+        LocalDateTime now = LocalDateTime.now();
+
+        // Batch update - tek seferde tüm süresi dolan grupları güncelle
+        int updatedCount = groupRepository.expireExpiredGroups(now);
+
+        if (updatedCount > 0) {
+            log.info("{} grup süresi doldu ve pasif yapıldı", updatedCount);
+        }
+    }
+
+    private void createRandomGroup(Region region, GroupCreationType groupCreationType, LocalDateTime startTime) {
         try {
             GroupTopicCombination groupTopicCombination = topicService.getRandomGroupTopic();
             String randomName = groupTopicCombination.getName();
             String randomDescription = groupTopicCombination.getDescription();
             int maxMembers = random.nextInt(4, 10);
-            LocalTime endTime = LocalTime.of(startTime.getHour() + random.nextInt(1, 4), 0); // 1-3 saat süre
+
+            LocalDateTime endTime = startTime.plusHours(random.nextInt(1, 4));
 
             Group group = Group.builder()
                     .name(randomName)

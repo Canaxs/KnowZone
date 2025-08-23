@@ -54,10 +54,18 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupResponse> getNearbyGroups(Double latitude, Double longitude, Double radiusKm) {
-        double searchRadius = radiusKm != null ? radiusKm : 5.0;
-        
-        return groupRepository.findNearbyGroupsByHaversine(latitude, longitude, searchRadius)
+    public List<GroupResponse> getNearbyGroups(Double latitude, Double longitude) {
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = Long.valueOf(userDetails.getUserId());
+        return groupRepository.findNearbyGroupsByHaversine(latitude, longitude, userId)
+                .stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GroupResponse> getNearbyInactiveGroups(Double latitude, Double longitude) {
+        return groupRepository.findNearbyInactiveGroupsByLocation(latitude, longitude)
                 .stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
@@ -67,7 +75,7 @@ public class GroupServiceImpl implements GroupService {
     public List<GroupResponse> getActiveGroupsNow() {
         LocalTime now = LocalTime.now();
         return groupRepository.findByIsActiveTrue().stream()
-                .filter(group -> now.isAfter(group.getStartTime()) && now.isBefore(group.getEndTime()))
+                .filter(group -> now.isAfter(LocalTime.from(group.getStartTime())) && now.isBefore(LocalTime.from(group.getEndTime())))
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }

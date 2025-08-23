@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/groups")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Slf4j
 public class GroupController {
@@ -45,10 +44,18 @@ public class GroupController {
     @GetMapping("/nearby")
     public ResponseEntity<List<GroupResponse>> getNearbyGroups(
             @RequestParam Double latitude,
-            @RequestParam Double longitude,
-            @RequestParam(required = false) Double radiusKm) {
+            @RequestParam Double longitude) {
         log.info("Getting nearby groups for coordinates: {}, {}", latitude, longitude);
-        List<GroupResponse> groups = groupService.getNearbyGroups(latitude, longitude, radiusKm);
+        List<GroupResponse> groups = groupService.getNearbyGroups(latitude, longitude);
+        return ResponseEntity.ok(groups);
+    }
+
+    @GetMapping("/nearby-inactive")
+    public ResponseEntity<List<GroupResponse>> getNearbyInactiveGroups(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude) {
+        log.info("Getting nearby inactive groups for coordinates: {}, {}", latitude, longitude);
+        List<GroupResponse> groups = groupService.getNearbyInactiveGroups(latitude, longitude);
         return ResponseEntity.ok(groups);
     }
 
